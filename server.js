@@ -67,7 +67,7 @@ function Location(geoData) {
 function errorHandle(req, res) {
   res.send({
     status: 500,
-    responseText: 'Sorry, something went wrong',
+    responseText: 'Sorry, something went wrong'
   });
 }
 
