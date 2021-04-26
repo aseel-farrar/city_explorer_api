@@ -46,7 +46,7 @@ function weatherHandle(req, res) {
 //weather constructor
 function Weather(weatherData) {
   this.forecast = weatherData.weather.description; //>>>>> data.weather.description <<<<<<<
-  this.time = weatherData.datetime;   // >>>>> data.datetime <<<<<<<
+  this.time = new Date(weatherData.datetime).toString().slice(0, 5);   // >>>>> data.datetime <<<<<<<
 }
 
 ///location route handler
