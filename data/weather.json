@@ -26,11 +26,7 @@
       "dewpt": 0.8,
       "snow": 0,
       "uv": 1.99206,
-      "weather": {
-        "icon": "c02d",
-        "code": 801,
-        "description": "Few clouds"
-      },
+      "weather": { "icon": "c02d", "code": 801, "description": "Few clouds"},
       "wind_dir": 200,
       "max_dhi": null,
       "clouds_hi": 3,
@@ -70,11 +66,7 @@
       "dewpt": 2.7,
       "snow": 0,
       "uv": 6.99871,
-      "weather": {
-        "icon": "c02d",
-        "code": 801,
-        "description": "Few clouds"
-      },
+      "weather": {"icon": "c02d","code": 801,"description": "Few clouds"},
       "wind_dir": 186,
       "max_dhi": null,
       "clouds_hi": 1,
@@ -114,11 +106,7 @@
       "dewpt": 3.9,
       "snow": 0,
       "uv": 7.05471,
-      "weather": {
-        "icon": "c02d",
-        "code": 802,
-        "description": "Scattered clouds"
-      },
+      "weather": {"icon": "c02d","code": 802,"description": "Scattered clouds"},
       "wind_dir": 205,
       "max_dhi": null,
       "clouds_hi": 3,
@@ -158,11 +146,7 @@
       "dewpt": -2.8,
       "snow": 0,
       "uv": 4.31327,
-      "weather": {
-        "icon": "c02d",
-        "code": 801,
-        "description": "Few clouds"
-      },
+      "weather": {"icon": "c02d","code": 801,"description": "Few clouds"},
       "wind_dir": 91,
       "max_dhi": null,
       "clouds_hi": 20,
@@ -202,11 +186,7 @@
       "dewpt": -1.5,
       "snow": 0,
       "uv": 5.2853,
-      "weather": {
-        "icon": "c03d",
-        "code": 803,
-        "description": "Broken clouds"
-      },
+      "weather": { "icon": "c03d", "code": 803,"description": "Broken clouds"},
       "wind_dir": 182,
       "max_dhi": null,
       "clouds_hi": 46,
