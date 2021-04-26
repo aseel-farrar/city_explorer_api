@@ -9,7 +9,7 @@ const server = express();
 server.use(cors());
 
 const PORT = process.env.PORT || 3000;
-//>>>>>>>>>>>>>>>>>ROUTES<<<<<<<<<<<<<<<<<<<
+//>>>>>>>>>>>>>>>>> ROUTES <<<<<<<<<<<<<<<<<<<
 
 ///home route
 server.get('/', (req, res) => {
@@ -20,13 +20,9 @@ server.get('/location', locationHandel);
 ///weather route
 server.get('/weather', weatherHandle);
 //ERROR page...
-server.get('*', (req, res) => {
-  res.send({
-    status: 500,
-    responseText: 'Sorry, something went wrong',
-  });
-});
-//>>>>>>>>>>>>>>>>>ROUTES<<<<<<<<<<<<<<<<<<<
+server.get('*', errorHandle);
+
+//>>>>>>>>>>>>>>>>> ROUTES <<<<<<<<<<<<<<<<<<<
 
 ///location route handler
 function weatherHandle(req, res) {
@@ -66,6 +62,13 @@ function Location(geoData) {
   this.formatted_query = geoData[0].display_name;
   this.latitude = geoData[0].lat;
   this.longitude = geoData[0].lon;
+}
+
+function errorHandle(req, res) {
+  res.send({
+    status: 500,
+    responseText: 'Sorry, something went wrong',
+  });
 }
 
 // add listener
