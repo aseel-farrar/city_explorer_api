@@ -2,6 +2,7 @@
 
 const express = require('express');
 const cors = require('cors');
+const superagent = require('superagent');
 require('dotenv').config();
 
 
@@ -30,11 +31,6 @@ function weatherHandle(req, res) {
 
   const allWeatherData = require('./data/weather.json');
 
-  // for (let i = 0; i < allWeatherData.data.length; i++) {
-  //   let weather = new Weather(allWeatherData.data[i]);
-  //   results.push(weather);
-  // }
-
   results = allWeatherData.data.map(item => {
     let weather = new Weather(item);
     return (weather);
@@ -51,14 +47,22 @@ function Weather(weatherData) {
 
 ///location route handler
 function locationHandel(req, res) {
-  const geoData = require('./data/location.json');
-  let locationData = new Location(geoData);
-  res.send(locationData);
+  let cityName = req.query.city;
+  let key = process.env.GEOCODE_API_KEY;
+  //https://eu1.locationiq.com/v1/search.php?key=YOUR_ACCESS_TOKEN&q=SEARCH_STRING&format=json
+  let LocURL = `https://eu1.locationiq.com/v1/search.php?key=${key}&q=${cityName}&format=json`;
+
+  superagent.get(LocURL)
+    .then(geoData => {
+      let gData = geoData.body;
+      const locationData = new Location(cityName, gData);
+      res.send(locationData);
+    });
 }
 
 //location constructor
-function Location(geoData) {
-  this.search_query = 'Lynwood';
+function Location(cityName, geoData) {
+  this.search_query = cityName;
   this.formatted_query = geoData[0].display_name;
   this.latitude = geoData[0].lat;
   this.longitude = geoData[0].lon;
