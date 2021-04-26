@@ -21,7 +21,10 @@ server.get('/location', locationHandel);
 server.get('/weather', weatherHandle);
 //ERROR page...
 server.get('*', (req, res) => {
-  res.send('ERROR page...');
+  res.send({
+    status: 500,
+    responseText: 'Sorry, something went wrong',
+  });
 });
 //>>>>>>>>>>>>>>>>>ROUTES<<<<<<<<<<<<<<<<<<<
 
@@ -65,10 +68,7 @@ function Location(geoData) {
   this.longitude = geoData[0].lon;
 }
 
-
-
-
-
+// add listener
 server.listen(PORT, () => {
   console.log(`listening to PORT ${PORT}`);
 });
