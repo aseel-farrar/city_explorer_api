@@ -2,13 +2,13 @@
 
 const express = require('express');
 const cors = require('cors');
-require('dotenv');
+require('dotenv').config();
 
 
 const server = express();
+const PORT = process.env.PORT || 4000;
 server.use(cors());
 
-const PORT = process.env.PORT || 3000;
 //>>>>>>>>>>>>>>>>> ROUTES <<<<<<<<<<<<<<<<<<<
 
 ///home route
@@ -30,16 +30,15 @@ function weatherHandle(req, res) {
 
   const allWeatherData = require('./data/weather.json');
 
-  for (let i = 0; i < allWeatherData.data.length; i++) {
-    let weather = new Weather(allWeatherData.data[i]);
-    results.push(weather);
-  }
-
-  // allWeatherData.data.forEach(item => {
-  //   let weather = new Weather(item);
+  // for (let i = 0; i < allWeatherData.data.length; i++) {
+  //   let weather = new Weather(allWeatherData.data[i]);
   //   results.push(weather);
-  // });
+  // }
 
+  results = allWeatherData.data.map(item => {
+    let weather = new Weather(item);
+    return (weather);
+  });
   res.send(results);
 }
 
@@ -47,6 +46,7 @@ function weatherHandle(req, res) {
 function Weather(weatherData) {
   this.forecast = weatherData.weather.description; //>>>>> data.weather.description <<<<<<<
   this.time = new Date(weatherData.datetime).toString().slice(0, 15);   // >>>>> data.datetime <<<<<<<
+  // console.log(this.time);
 }
 
 ///location route handler
