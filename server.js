@@ -3,6 +3,7 @@
 const express = require('express');
 const cors = require('cors');
 const superagent = require('superagent');
+// const { connected } = require('node:process');
 require('dotenv').config();
 
 
@@ -13,17 +14,36 @@ server.use(cors());
 //>>>>>>>>>>>>>>>>> ROUTES <<<<<<<<<<<<<<<<<<<
 
 ///home route
-server.get('/', (req, res) => {
-  res.send('Home Page...');
-});
+server.get('/', (req, res) => { res.send('Home Page...'); });
 ///location route
 server.get('/location', locationHandel);
 ///weather route
 server.get('/weather', weatherHandle);
+///weather route
+server.get('/parks', parksHandle);
 //ERROR page...
 server.get('*', errorHandle);
 
 //>>>>>>>>>>>>>>>>> ROUTES <<<<<<<<<<<<<<<<<<<
+
+// parks route handler
+function parksHandle(req, res) {
+  let parkName = req.query.parkcode;
+  const key = process.env.PARKS_API_KEY;
+  //https://developer.nps.gov/api/v1/alerts?parkCode=acad,dena
+  let parkURL = `https://developer.nps.gov/api/v1/parks?q=${parkName}&api_key=${key}`;
+
+  superagent.get(parkURL)
+    .then(parksData => {
+      let park = parksData.body.data;
+      let results = park.map(item => {
+        let address = item.addresses[0];
+        let oneParkData = new Park(item, address);
+        return oneParkData;
+      });
+      res.send(results);
+    });
+}
 
 ///location route handler
 function weatherHandle(req, res) {
@@ -40,6 +60,15 @@ function weatherHandle(req, res) {
       });
       res.send(results);
     });
+}
+
+//park constructor
+function Park(parkData, address) {
+  this.name = parkData.fullName;
+  this.address = `${address.line1}, ${address.city}, ${address.stateCode} ${address.postalCode}`;
+  this.fee = parkData.entranceFees[0].cost;
+  this.description = parkData.description;
+  this.url = parkData.url;
 }
 
 //weather constructor
