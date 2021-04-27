@@ -31,7 +31,7 @@ function parksHandle(req, res) {
   let parkName = req.query.parkcode;
   const key = process.env.PARKS_API_KEY;
   //https://developer.nps.gov/api/v1/alerts?parkCode=acad,dena
-  let parkURL = `https://developer.nps.gov/api/v1/parks?q=${parkName}&api_key=${key}`;
+  let parkURL = `https://developer.nps.gov/api/v1/parks?q=${parkName}&api_key=${key}&limit=10`;
 
   superagent.get(parkURL)
     .then(parksData => {
@@ -51,7 +51,7 @@ function weatherHandle(req, res) {
   let cityName = req.query.city;
   const key = process.env.WEATHER_API_KEY;
   //https://api.weatherbit.io/v2.0/forecast/daily?city=Raleigh,NC&key=API_KEY
-  let weatherURL = `https://api.weatherbit.io/v2.0/forecast/daily?city=${cityName}&key=${key}`;
+  let weatherURL = `https://api.weatherbit.io/v2.0/forecast/daily?city=${cityName}&key=${key}&days=8`;
   superagent.get(weatherURL)
     .then(WeatherData => {
       results = WeatherData.body.data.map(item => {
