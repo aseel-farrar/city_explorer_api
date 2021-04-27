@@ -31,7 +31,7 @@ function parksHandle(req, res) {
   let parkName = req.query.parkcode;
   const key = process.env.PARKS_API_KEY;
   //https://developer.nps.gov/api/v1/alerts?parkCode=acad,dena
-  let parkURL = `https://developer.nps.gov/api/v1/parks?q=${parkName}&api_key=${key}`;
+  let parkURL = `https://developer.nps.gov/api/v1/parks?q=${parkName}&api_key=${key}&limit=10`;
 
   superagent.get(parkURL)
     .then(parksData => {
