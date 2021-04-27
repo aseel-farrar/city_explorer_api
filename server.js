@@ -51,7 +51,7 @@ function weatherHandle(req, res) {
   let cityName = req.query.city;
   const key = process.env.WEATHER_API_KEY;
   //https://api.weatherbit.io/v2.0/forecast/daily?city=Raleigh,NC&key=API_KEY
-  let weatherURL = `https://api.weatherbit.io/v2.0/forecast/daily?city=${cityName}&key=${key}`;
+  let weatherURL = `https://api.weatherbit.io/v2.0/forecast/daily?city=${cityName}&key=${key}&days=8`;
   superagent.get(weatherURL)
     .then(WeatherData => {
       results = WeatherData.body.data.map(item => {
