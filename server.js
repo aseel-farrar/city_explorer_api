@@ -11,11 +11,11 @@ const server = express();
 const PORT = process.env.PORT || 4000;
 server.use(cors());
 
-const client = new pg.Client(process.env.DATABASE_URL);
-// const client = new pg.Client({
-//   connectionString: process.env.DATABASE_URL,
-//   ssl: { rejectUnauthorized: false }
-// });
+// const client = new pg.Client(process.env.DATABASE_URL);
+const client = new pg.Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
+});
 
 //>>>>>>>>>>>>>>>>> ROUTES <<<<<<<<<<<<<<<<<<<
 
@@ -27,10 +27,20 @@ server.get('/location', locationHandel);
 server.get('/weather', weatherHandle);
 ///weather route
 server.get('/parks', parksHandle);
+
+server.get('/get', getHandle);
 //ERROR page...
 server.get('*', errorHandle);
 
 //>>>>>>>>>>>>>>>>> ROUTES <<<<<<<<<<<<<<<<<<<
+//! get rout handler
+function getHandle(req, res) {
+  let SOL = `SELECT * FROM locations;`;
+  client.query(SOL)
+    .then(result => {
+      res.send(result.rows);
+    });
+}
 
 //!  parks route handler
 function parksHandle(req, res) {
@@ -92,6 +102,9 @@ function locationHandel(req, res) {
                 res.send(result.rows[0]);
               });
           });
+      }
+      else if (cityName === null) {
+        res.send('PLEASE ENTER VALID CITY NAME');
       }
       else { // RETURN FROM DATABASE
         res.send(result.rows[0]);
