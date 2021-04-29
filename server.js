@@ -27,7 +27,7 @@ server.get('/location', locationHandel);
 server.get('/weather', weatherHandle);
 ///weather route
 server.get('/parks', parksHandle);
-
+//get the data from DATABASE route (i use it for testing)
 server.get('/get', getHandle);
 //ERROR page...
 server.get('*', errorHandle);
