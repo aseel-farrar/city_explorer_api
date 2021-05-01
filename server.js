@@ -28,7 +28,7 @@ server.get('*', errorHandle);
 
 // parks route handler
 function parksHandle(req, res) {
-  let parkName = req.query.parkcode;
+  let parkName = req.query.search_query;
   const key = process.env.PARKS_API_KEY;
   //https://developer.nps.gov/api/v1/alerts?parkCode=acad,dena
   let parkURL = `https://developer.nps.gov/api/v1/parks?q=${parkName}&api_key=${key}&limit=10`;
@@ -48,7 +48,7 @@ function parksHandle(req, res) {
 ///location route handler
 function weatherHandle(req, res) {
   let results = [];
-  let cityName = req.query.city;
+  let cityName = req.query.search_query;
   const key = process.env.WEATHER_API_KEY;
   //https://api.weatherbit.io/v2.0/forecast/daily?city=Raleigh,NC&key=API_KEY
   let weatherURL = `https://api.weatherbit.io/v2.0/forecast/daily?city=${cityName}&key=${key}&days=8`;
@@ -79,7 +79,7 @@ function Weather(weatherData) {
 
 ///location route handler
 function locationHandel(req, res) {
-  let cityName = req.query.city;
+  let cityName = req.query.search_query;
   const key = process.env.GEOCODE_API_KEY;
   //https://eu1.locationiq.com/v1/search.php?key=YOUR_ACCESS_TOKEN&q=SEARCH_STRING&format=json
   let LocationURL = `https://eu1.locationiq.com/v1/search.php?key=${key}&q=${cityName}&format=json`;
