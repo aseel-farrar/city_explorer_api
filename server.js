@@ -3,9 +3,7 @@
 const express = require('express');
 const cors = require('cors');
 const superagent = require('superagent');
-// const { connected } = require('node:process');
 require('dotenv').config();
-
 
 const server = express();
 const PORT = process.env.PORT || 4000;
@@ -19,8 +17,12 @@ server.get('/', (req, res) => { res.send('Home Page...'); });
 server.get('/location', locationHandel);
 ///weather route
 server.get('/weather', weatherHandle);
-///weather route
+///parks route
 server.get('/parks', parksHandle);
+///movies route
+server.get('/movies', moviesHandle);
+///yelp route
+server.get('/yelp', yelpHandle);
 //ERROR page...
 server.get('*', errorHandle);
 
@@ -75,6 +77,68 @@ function Park(parkData, address) {
 function Weather(weatherData) {
   this.forecast = weatherData.weather.description; //>>>>> data.weather.description <<<<<<<
   this.time = new Date(weatherData.datetime).toString().slice(0, 15);// >>>>> data.datetime <<<<<<<
+}
+
+//movie constructor
+function Movie(movieData) {
+  this.title = movieData.title;
+  this.overview = movieData.overview;
+  this.avgVotes = movieData.vote_average;
+  this.totalVotes = movieData.vote_count;
+  //https://image.tmdb.org/t/p/w500poster_path
+  this.imagURL = `https://image.tmdb.org/t/p/w500${movieData.poster_path}`;
+  this.popularity = movieData.popularity;
+  this.released = movieData.release_date;
+}
+
+//movie constructor
+function Yelp(yelpData) {
+  this.name = yelpData.name;
+  this.image_url = yelpData.image_url;
+  this.price = yelpData.price;
+  this.rating = yelpData.rating;
+  this.url = yelpData.url;
+}
+
+///yelp route handler
+function yelpHandle(req, res) {
+  let search_query = req.query.search_query;
+  let key = process.env.YELP_API_KEY;
+
+  let page = req.query.page;
+  let yelpArray = [];
+  let limit = 5;
+  let offset = (page - 1) * limit + 1;//detemine the starting result index
+
+  //https://api.yelp.com/v3/businesses/search?location=search_query&limit=limit&offset=offset
+  let yelpURL = `https://api.yelp.com/v3/businesses/search?location=${search_query}&limit=${limit}&offset=${offset}`;
+  superagent
+    .get(yelpURL)
+    .set('Authorization', `Bearer ${key}`)
+    .then(data => {
+      data.body.businesses.forEach(element => {
+        let newYelp = new Yelp(element);
+        yelpArray.push(newYelp);
+      })
+      res.send(yelpArray);
+    })
+}
+
+///movie route handler
+function moviesHandle(req, res) {
+  let moviesArray = [];
+  let search_query = req.query.search_query;
+  let key = process.env.MOVIE_API_KEY;
+  // https://api.themoviedb.org/3/search/movie?api_key=YOUR_ACCESS_TOKEN&query=SEARCH_STRING&include_adult=false
+  let movieURL = `https://api.themoviedb.org/3/search/movie?api_key=${key}&query=${search_query}&include_adult=false`;
+  superagent.get(movieURL)
+    .then(data => {
+      data.body.results.forEach(element => {
+        let newMovie = new Movie(element);
+        moviesArray.push(newMovie)
+      })
+      res.send(moviesArray);
+    })
 }
 
 ///location route handler
